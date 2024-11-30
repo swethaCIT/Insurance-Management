@@ -1,10 +1,41 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false); // Track login state
+  const [user, setUser] = useState<any>(null); // Store user details
+  const [dropdownOpen, setDropdownOpen] = useState(false); // Profile dropdown
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem("user");
+    if (storedUser) {
+      setLoggedIn(true);
+      setUser(JSON.parse(storedUser));
+    } else {
+      setLoggedIn(false);
+    }
+  }, []);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    toast.success("Logging out")
+    setLoggedIn(false);
+    setUser(null);
+    setTimeout(() => {
+      navigate("/login");
+    }, 3000); 
   };
 
   return (
@@ -24,13 +55,59 @@ const Navbar = () => {
           </span>
         </a>
         <div className="flex md:order-2 space-x-3 rtl:space-x-reverse">
-          
-          <Link to="/login"
-            type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Login           
-          </Link>
+          {loggedIn ? (
+            <div className="relative">
+              <button
+                onClick={toggleDropdown}
+                type="button"
+                className="flex items-center space-x-2 px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+              >
+                <span>{user?.email || "Profile"}</span>
+                <img
+                  src="https://www.w3schools.com/howto/img_avatar.png" // Placeholder avatar
+                  alt="Profile"
+                  className="w-6 h-6 rounded-full"
+                />
+              </button>
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg dark:bg-gray-800">
+                  <ul className="py-2">
+                    <li>
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600"
+                      >
+                        Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/settings"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600"
+                      >
+                        Settings
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600"
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link
+              to="/Login"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Login
+            </Link>
+          )}
           <button
             onClick={toggleMenu}
             type="button"
@@ -76,7 +153,6 @@ const Navbar = () => {
               <a
                 href="#"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                aria-current="page"
               >
                 Home
               </a>

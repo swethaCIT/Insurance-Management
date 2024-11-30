@@ -8,7 +8,7 @@ const InsuranceCard: React.FC<InsuranceCardProps> = ({
   title,
   description,
   imgSrc,
-}) => {
+}) =>  {
   return (
     <a
       href="#"

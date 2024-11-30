@@ -4,10 +4,20 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      colors: {
+        'custom-yellow': '#FFEDAB',
+        'custom-blue': '#40B0DF', 
+        'skin-tone':'#FFEDAB'
+      },
       fontFamily: {
-        "bungee-shade": ['"Bungee Shade"', "cursive"],
+        lora: ['Lora', 'serif'], 
+      },
+      fontSize: {
+        '35px': '35px', 
       },
     },
   },
   plugins: [],
 };
+
+

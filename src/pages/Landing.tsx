@@ -4,7 +4,7 @@ import InsuranceList from "../components/InsuranceList";
 
 import "react-toastify/dist/ReactToastify.css";
 import Home from "../components/Home";
-import ChooseUs from "../components/ChooseUs";
+// import ChooseUs from "../components/ChooseUs";
 
 const Landing: React.FC = () => {
   // const navigate = useNavigate();
@@ -21,7 +21,7 @@ const Landing: React.FC = () => {
     <>
       <Navbar />
       <Home />
-      <ChooseUs />
+      {/* <ChooseUs /> */}
       <InsuranceList />
       <Footer />
     </>

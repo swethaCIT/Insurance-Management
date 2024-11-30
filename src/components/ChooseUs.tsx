@@ -1,4 +1,4 @@
-import { chooseData } from "../../data/chooseData"
+// import { chooseData } from "../../data/chooseData"
 
 const ChooseUs: React.FC = () => {
     return (
